@@ -16,6 +16,7 @@ import setAuthToken from './utils/setAuthToken';
 import AuthContext from './components/contexts/auth/AuthContext';
 
 if (localStorage.apiToken) {
+  console.log(localStorage.apiToken)
   setAuthToken(localStorage.apiToken);
 }
 

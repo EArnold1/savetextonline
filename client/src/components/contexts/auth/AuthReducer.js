@@ -9,6 +9,7 @@ import {
   CLEAR_ERRORS,
 } from '../types';
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default (state, action) => {
   switch (action.type) {
     case USER_LOADED:
@@ -30,7 +31,6 @@ export default (state, action) => {
     case REGISTER_FAIL:
     case AUTH_ERROR:
     case LOGIN_FAIL:
-    case LOGOUT:
       localStorage.removeItem('apiToken');
       return {
         ...state,
@@ -39,6 +39,15 @@ export default (state, action) => {
         loading: false,
         user: null,
         error: action.payload,
+      };
+    case LOGOUT:
+      localStorage.removeItem('apiToken');
+      return {
+        ...state,
+        token: null,
+        isAuthenticated: false,
+        loading: false,
+        user: null,
       };
     case CLEAR_ERRORS:
       return {

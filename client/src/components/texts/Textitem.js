@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
 import TextContext from '../contexts/texts/TextContexts';
+import parse from 'html-react-parser'
+
 
 const Textitem = ({ text }) => {
   const { setCurrent, deleteText } = useContext(TextContext);
@@ -16,7 +18,7 @@ const Textitem = ({ text }) => {
       <div className="card-title">
         <h3 className="border-bottom p-1">{title}</h3>
       </div>
-      <p className="card-body"> {textarea} </p>
+      <section className="card-body"> {parse(textarea)} </section>
       <div className="m-1">
         <button
           className="btn btn-info btn-sm float-start"

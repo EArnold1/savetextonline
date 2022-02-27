@@ -1,6 +1,8 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, Fragment } from 'react';
 import TextContext from '../contexts/texts/TextContexts';
 import { v4 } from 'uuid';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 const TextForm = () => {
   const { addText, current, clearCurrent, updateText } =
@@ -24,6 +26,22 @@ const TextForm = () => {
     }
   }, [current, TextContext]);
 
+
+
+  const { title, textarea } = textstate;
+  const onChange = (e) => {
+    setText({ ...textstate, [e.target.name]: e.target.value });
+  };
+
+  const [txtEditor, setTxtEditor] = useState('')
+
+  const txtHandler = (e, editor) => {
+    const data = editor.getData()
+    setTxtEditor(data)
+    setText({ ...textstate, textarea: data });
+
+  }
+
   const clearAll = () => {
     clearCurrent();
     setText({
@@ -31,54 +49,50 @@ const TextForm = () => {
       textarea: '',
       id: v4(),
     });
+
+    setTxtEditor('')
   };
 
-  const { title, textarea } = textstate;
-  const onChange = (e) => {
-    setText({ ...textstate, [e.target.name]: e.target.value });
-  };
   const onSubmit = (e) => {
     e.preventDefault();
     if (current !== null) {
-      updateText(textstate);
+      // txtEditor !== '' ? updateText(textstate) : console.log()
+      updateText(textstate)
     } else {
       addText(textstate);
     }
+
     clearAll();
   };
   return (
-    <form onSubmit={onSubmit}>
-      <input
-        className="form-control"
-        type="text"
-        name="title"
-        value={title}
-        placeholder="Enter Title"
-        onChange={onChange}
-      />
-      <textarea
-        className="form-control mt-3"
-        name="textarea"
-        id=""
-        cols="30"
-        value={textarea}
-        rows="10"
-        placeholder="Type here....."
-        onChange={onChange}
-        required
-      ></textarea>
-      <div className="d-grid mt-3">
-        {current === null ? (
-          <button className="bd-success btn btn-success btn-block">
-            Add <i className="fas fa-plus-circle"></i>{' '}
-          </button>
-        ) : (
-          <button className="bd-success btn btn-success btn-block">
-            Update <i className="fas fa-plus-circle"></i>{' '}
-          </button>
-        )}
-      </div>
-    </form>
+    <Fragment>
+      <form onSubmit={onSubmit}>
+        <input
+          className="form-control"
+          type="text"
+          name="title"
+          value={title}
+          placeholder="Enter Title"
+          onChange={onChange}
+        />
+        <br />
+        <CKEditor editor={ClassicEditor} onChange={txtHandler}
+          data={current ? current.textarea : textarea}
+        />
+        <div className="d-grid mt-3">
+          {current === null ? (
+            <button className="bd-success btn btn-success btn-block">
+              Add <i className="fas fa-plus-circle"></i>{' '}
+            </button>
+          ) : (
+            <button className="bd-success btn btn-success btn-block">
+              Update <i className="fas fa-plus-circle"></i>{' '}
+            </button>
+          )}
+        </div>
+      </form>
+    </Fragment>
+
   );
 };
 
