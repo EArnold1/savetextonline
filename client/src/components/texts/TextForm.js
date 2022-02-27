@@ -28,7 +28,7 @@ const TextForm = () => {
 
 
 
-  const { title } = textstate;
+  const { title, textarea } = textstate;
   const onChange = (e) => {
     setText({ ...textstate, [e.target.name]: e.target.value });
   };
@@ -38,7 +38,7 @@ const TextForm = () => {
   const txtHandler = (e, editor) => {
     const data = editor.getData()
     setTxtEditor(data)
-    setText({ ...textstate, textarea: txtEditor });
+    setText({ ...textstate, textarea: data });
 
   }
 
@@ -56,7 +56,8 @@ const TextForm = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     if (current !== null) {
-      txtEditor !== '' ? updateText(textstate) : console.log()
+      // txtEditor !== '' ? updateText(textstate) : console.log()
+      updateText(textstate)
     } else {
       addText(textstate);
     }
@@ -76,7 +77,7 @@ const TextForm = () => {
         />
         <br />
         <CKEditor editor={ClassicEditor} onChange={txtHandler} name="textarea"
-          requi
+          data={current ? current.textarea : ''}
         />
         <div className="d-grid mt-3">
           {current === null ? (
