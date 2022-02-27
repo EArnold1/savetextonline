@@ -22,7 +22,6 @@ export default (state, action) => {
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
       localStorage.setItem('apiToken', action.payload.token);
-      localStorage.setItem('api', 'love');
       return {
         ...state,
         ...action.payload,
@@ -32,8 +31,7 @@ export default (state, action) => {
     case REGISTER_FAIL:
     case AUTH_ERROR:
     case LOGIN_FAIL:
-    case LOGOUT:
-      // localStorage.removeItem('apiToken');
+      localStorage.removeItem('apiToken');
       return {
         ...state,
         token: null,
@@ -41,6 +39,15 @@ export default (state, action) => {
         loading: false,
         user: null,
         error: action.payload,
+      };
+    case LOGOUT:
+      localStorage.removeItem('apiToken');
+      return {
+        ...state,
+        token: null,
+        isAuthenticated: false,
+        loading: false,
+        user: null,
       };
     case CLEAR_ERRORS:
       return {

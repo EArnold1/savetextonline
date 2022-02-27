@@ -3,7 +3,6 @@ import TextContext from '../contexts/texts/TextContexts';
 import { v4 } from 'uuid';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import parse from 'html-react-parser'
 
 const TextForm = () => {
   const { addText, current, clearCurrent, updateText } =
@@ -27,16 +26,9 @@ const TextForm = () => {
     }
   }, [current, TextContext]);
 
-  const clearAll = () => {
-    clearCurrent();
-    setText({
-      title: '',
-      textarea: '',
-      id: v4(),
-    });
-  };
 
-  const { title, textarea } = textstate;
+
+  const { title } = textstate;
   const onChange = (e) => {
     setText({ ...textstate, [e.target.name]: e.target.value });
   };
@@ -46,16 +38,29 @@ const TextForm = () => {
   const txtHandler = (e, editor) => {
     const data = editor.getData()
     setTxtEditor(data)
-    console.log(editor.getData())
+    setText({ ...textstate, textarea: txtEditor });
+
   }
+
+  const clearAll = () => {
+    clearCurrent();
+    setText({
+      title: '',
+      textarea: '',
+      id: v4(),
+    });
+
+    setTxtEditor('')
+  };
 
   const onSubmit = (e) => {
     e.preventDefault();
     if (current !== null) {
-      updateText(textstate);
+      txtEditor !== '' ? updateText(textstate) : console.log()
     } else {
       addText(textstate);
     }
+
     clearAll();
   };
   return (
@@ -69,17 +74,10 @@ const TextForm = () => {
           placeholder="Enter Title"
           onChange={onChange}
         />
-        <textarea
-          className="form-control mt-3"
-          name="textarea"
-          id=""
-          cols="30"
-          value={textarea}
-          rows="10"
-          placeholder="Type here....."
-          onChange={onChange}
-          required
-        ></textarea>
+        <br />
+        <CKEditor editor={ClassicEditor} onChange={txtHandler} name="textarea"
+          requi
+        />
         <div className="d-grid mt-3">
           {current === null ? (
             <button className="bd-success btn btn-success btn-block">
@@ -92,10 +90,6 @@ const TextForm = () => {
           )}
         </div>
       </form>
-      <br />
-      <CKEditor editor={ClassicEditor} onChange={txtHandler} />
-      <hr />
-      <p>{parse(txtEditor)}</p>
     </Fragment>
 
   );

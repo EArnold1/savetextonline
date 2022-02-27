@@ -26,7 +26,7 @@ const AuthState = (props) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
   //Load user
   const loadUser = async () => {
-    if (localStorage.token) {
+    if (localStorage.apiToken) {
       setAuthToken(localStorage.apiToken);
     }
     try {
@@ -62,7 +62,6 @@ const AuthState = (props) => {
       const res = await axios.post('api/auth', formData, config);
       dispatch({ type: LOGIN_SUCCESS, payload: res.data });
       loadUser();
-      console.log(res.data)
     } catch (err) {
       dispatch({ type: LOGIN_FAIL, payload: err.response.data.msg });
       console.log(err)
@@ -76,7 +75,7 @@ const AuthState = (props) => {
 
   //Logout
   const logout = () => {
-    dispatch({ type: LOGOUT });
+    dispatch({ type: LOGOUT, });
   };
   return (
     <AuthContext.Provider
