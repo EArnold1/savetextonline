@@ -76,8 +76,8 @@ const TextForm = () => {
           onChange={onChange}
         />
         <br />
-        <CKEditor editor={ClassicEditor} onChange={txtHandler} name="textarea"
-          data={current ? current.textarea : ''}
+        <CKEditor editor={ClassicEditor} onChange={txtHandler}
+          data={current ? current.textarea : textarea}
         />
         <div className="d-grid mt-3">
           {current === null ? (

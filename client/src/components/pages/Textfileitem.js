@@ -1,6 +1,8 @@
 import React, { useContext, useState } from 'react';
 import TextContext from '../contexts/texts/TextContexts';
 import { Link, Redirect } from 'react-router-dom';
+import parse from 'html-react-parser'
+
 
 const Textfileitem = ({ text }) => {
   const { title, textarea } = text;
@@ -20,7 +22,7 @@ const Textfileitem = ({ text }) => {
     <div className="col-sm-12 my-1">
       <div className="card p-2">
         {title && <h3 className="card-title">{title}</h3>}
-        <div className="card-body">{textarea}</div>
+        <div className="card-body">{parse(textarea)}</div>
         <div className="m-1">
           {current !== null ? (
             <Redirect to="/" />

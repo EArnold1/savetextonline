@@ -10,8 +10,7 @@ const Texts = () => {
 
   return (
     <div className="container">
-      {texts !== null &&
-        texts.map((text) => <Textitem text={text} key={text._id} />)}
+      {texts !== null && <Textitem text={texts[0]} key={texts[0]._id} />}
     </div>
   );
 };
